@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <Settings>
+    <Login></Login>
+    <Url>www.fxcorporate.com/Hosts.jsp</Url>
+    <Connection>demo</Connection>
+    <SessionID></SessionID>
+    <Pin></Pin>
+    <OutputDir>d:\fxcmdata</OutputDir>
+    <Delimiter>;</Delimiter>
+    <DateTimeSeparator>,</DateTimeSeparator>
+    <FormatDecimalPlaces>Y</FormatDecimalPlaces>
+    <Timezone>UTC</Timezone>
+
+    <History>
+      <Instrument>USD/JPY</Instrument>
+      <Timeframe>m1</Timeframe>
+      <Filename>USD_JPY_m1</Filename>
+      <NumBars>400</NumBars>
+    </History>
+
+    <History>
+      <Instrument>EUR/USD</Instrument>
+      <Timeframe>H1</Timeframe>
+      <Filename>EUR_USD_H1</Filename>
+      <NumBars>256</NumBars>
+    </History>
+
+  </Settings>
+</configuration>
