@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="fxcore2, Version=1.3.0.0, Culture=neutral, PublicKeyToken=440355e023152e83, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\nsis\snapshot\bin\net\dotnet45\fxcore2.dll</HintPath>
+      <HintPath>..\bin\net\dotnet45\fxcore2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
