@@ -17,6 +17,7 @@
       <Timeframe>m1</Timeframe>
       <Filename>USD_JPY_m1</Filename>
       <NumBars>400</NumBars>
+      <AddHeader>Y</AddHeader>
     </History>
 
     <History>
@@ -24,6 +25,7 @@
       <Timeframe>H1</Timeframe>
       <Filename>EUR_USD_H1</Filename>
       <NumBars>256</NumBars>
+      <AddHeader>Y</AddHeader>
     </History>
 
   </Settings>
