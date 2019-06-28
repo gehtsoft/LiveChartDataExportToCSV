@@ -51,18 +51,22 @@ namespace LiveChartDataExportToCSV
 
         private DateFormatter mFormatter;
         private CsvFileWriter mWriter;
+        private bool mAddHeader;
+        private bool mIsFirstLine;
 
         //O2GTimeConverter mTimeConverter;
         //O2GTimeConverterTimeZone mTimezone;
         IDateTimeConverter mDateTimeConverter;
 
         public CSVCandleDataWriter(string instrument, string timeframe, string outputFolder, string filename, string delimiter,
-            bool formatDecimal, string dateTimeSeparator, bool writeIncompleteCandles, string timezone, IDateTimeConverter dateTimeConverter)
+            bool formatDecimal, string dateTimeSeparator, bool writeIncompleteCandles, string timezone, IDateTimeConverter dateTimeConverter, bool addHeader)
         {
             mInstrument = instrument;
             mTimeframe = timeframe;
             mWriteIncompleteCandles = writeIncompleteCandles;
             mFormatDecimal = formatDecimal;
+            mAddHeader = addHeader;
+            mIsFirstLine = true;
 
             //mTimezone = convToForexConnectZone(timezone);
             mDateTimeConverter = dateTimeConverter;
@@ -89,6 +93,11 @@ namespace LiveChartDataExportToCSV
 
         public void WriteCandleData(Candle candle)
         {
+            if (mAddHeader == true && mIsFirstLine == true)
+            {
+                WriteHeaderData();
+            }
+
             CsvRow row = new CsvRow();
             DateTime dateDisplay = candle.Date;
            // dateDisplay = mTimeConverter.convert(candle.Date, O2GTimeConverterTimeZone.Server, mTimezone);
@@ -120,11 +129,30 @@ namespace LiveChartDataExportToCSV
             }
             row.Add(candle.Volume.ToString());
             mWriter.WriteRow(row);
+            mIsFirstLine = false;
 
             if (!candle.IsCompleted)
             {
                 mWriter.MoveToPreviousLine();
             }
+        }
+
+        private void WriteHeaderData()
+        {
+            CsvRow row = new CsvRow();
+
+            row.Add("Date");
+            row.Add("BidOpen");
+            row.Add("BidHigh");
+            row.Add("BidLow");
+            row.Add("BidClose");
+            row.Add("AskOpen");
+            row.Add("AskHigh");
+            row.Add("AskLow");
+            row.Add("AskClose");
+            row.Add("Volume");
+
+            mWriter.WriteRow(row);
         }
 
         #region IDisposable Members

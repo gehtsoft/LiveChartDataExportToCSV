@@ -62,7 +62,8 @@ namespace LiveChartDataExportToCSV
                         mDataWriters[history.ID] = new List<ICandleDataWriter>();
                         //mDataWriters[history.ID].Add(new ConsoleCandleDataWriter(config.Instrument, config.Timeframe, true));
                         mDataWriters[history.ID].Add(new CSVCandleDataWriter(config.Instrument, config.Timeframe, mOutputDir,
-                            config.Filename, mDelimiter, mFormatDecimal.ToLower().Equals("y"), mDateTimeSeparator, true, mTimezone, transport.getTimeConverter()));
+                            config.Filename, mDelimiter, mFormatDecimal.ToLower().Equals("y"), mDateTimeSeparator, true, mTimezone, transport.getTimeConverter(), 
+                            config.AddHeader));
                         history.OnLoaded += OnHistoryLoaded;
                         history.OnFailed += OnHistoryFailed;
                         history.OnUpdated += OnHistoryUpdated;
@@ -171,7 +172,8 @@ namespace LiveChartDataExportToCSV
             string timeframe = string.Empty;
             string filename = string.Empty;
             int numBars = 0;
-            
+            bool addHeader = false;
+
             while (reader.Read())
             {
                 if (reader.NodeType == XmlNodeType.Element)
@@ -190,10 +192,14 @@ namespace LiveChartDataExportToCSV
                         case "NumBars":
                             numBars = reader.ReadElementContentAsInt();
                             break;
+                        case "AddHeader":
+                            addHeader = reader.ReadElementContentAsString().ToLower().Equals("y");
+                            break;
                     }
                 }
             }
-            return new HistoryConfigData(instrument, timeframe, filename, numBars);
+
+            return new HistoryConfigData(instrument, timeframe, filename, numBars, addHeader);
         }
         
         static void OnStatus(object sender, SessionStatusEventArgs args)
@@ -301,12 +307,27 @@ namespace LiveChartDataExportToCSV
         }
         private int mNumBars;
 
-        public HistoryConfigData(string instrument, string timeframe, string filename, int numBars)
+        public bool AddHeader
+        {
+            get
+            {
+                return mAddHeader;
+            }
+            private set
+            {
+                mAddHeader = value;
+            }
+        }
+        private bool mAddHeader;
+
+
+        public HistoryConfigData(string instrument, string timeframe, string filename, int numBars, bool addHeader)
         {
             Instrument = instrument;
             Timeframe = timeframe;
             Filename = filename;
             NumBars = numBars;
+            mAddHeader = addHeader;
         }
     }
 }
